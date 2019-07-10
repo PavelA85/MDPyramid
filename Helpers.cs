@@ -57,23 +57,23 @@ namespace MDPyramid
             return newArray;
         }
 
-        public static T[][] ExpandArray<T>(this T[][] matrixToResize)
+        public static T[][] NormalizeArray<T>(this T[][] matrix, T value)
         {
-            var newArray = new T[matrixToResize.Length + 1][];
-            matrixToResize.CopyTo(newArray, 1);
-            newArray[0] = new T[1];
-            return newArray;
+            var array = new T[matrix.Length + 1][];
+            matrix.CopyTo(array, 1);
+            array[0] = new[] { value };
+            return array;
         }
-        public static T[][] resizeArray3<T>(this T[][] matrixToResize)
+
+        public static T[][] ReduceArray<T>(this T[][] matrixToResize)
         {
             return matrixToResize.Skip(1).ToArray();
         }
 
-        public static List<T> MyAdd<T>(this List<T> that, T item)
+        public static List<T> AddAndReturn<T>(this List<T> that, T item)
         {
             that.Add(item);
             return that;
         }
-
     }
 }

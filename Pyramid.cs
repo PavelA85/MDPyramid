@@ -9,16 +9,64 @@ namespace MDPyramid
         private readonly Func<int?, bool> _even = n => n % 2 == 0;
         private readonly Func<int?, bool> _odd = n => n % 2 != 0;
 
-        public int?[][] Matrix { get; set; }
+        private int?[][] Matrix { get; set; }
 
-        public Pyramid(string[] r)
+        public Pyramid(string[] lines)
         {
-            Matrix = new int?[r.Length][];
-            AddLines(r);
+            Matrix = new int?[lines.Length][];
+            AddLines(lines);
         }
 
 
-        public void CleanInvalidNodes()
+        public Path FindPath()
+        {
+            Clean();
+            Print();
+            var results = FindPaths(0, 0, new List<int>());
+            return results.OrderByDescending(x => x.Sum).First();
+        }
+
+        private void Clean()
+        {
+            var normalized = false;
+            if (_odd(Matrix[0][0]))
+            {
+                Matrix = Matrix.NormalizeArray(0);
+                normalized = true;
+            }
+            CleanInvalidNodes();
+            CleanUnreachableNodes();
+
+            if (normalized)
+            {
+                Matrix = Matrix.ReduceArray();
+            }
+        }
+
+        private IEnumerable<Path> FindPaths(int i, int j, List<int> path)
+        {
+            var start = Matrix.ElementAtOrDefault(i, j);
+            if (start == default)
+                yield break;
+
+            if (i + 1 == Matrix.Length)
+            {
+                yield return new Path(new List<int>(path).AddAndReturn(start.Value));
+                yield break;
+            }
+
+            foreach (var s in FindPaths(i + 1, j, new List<int>(path).AddAndReturn(start.Value)))
+            {
+                yield return s;
+            }
+
+            foreach (var s in FindPaths(i + 1, j + 1, new List<int>(path).AddAndReturn(start.Value)))
+            {
+                yield return s;
+            }
+        }
+
+        private void CleanInvalidNodes()
         {
             for (var i = 0; i < Matrix.Length; i++)
             {
@@ -33,7 +81,7 @@ namespace MDPyramid
             }
         }
 
-        public void CleanUnreachableNodes()
+        private void CleanUnreachableNodes()
         {
             for (var i = 0; i < Matrix.Length; i++)
             {
@@ -56,20 +104,7 @@ namespace MDPyramid
             }
         }
 
-        public void Clean()
-        {
-            if (_odd(Matrix[0][0]))
-            {
-                Matrix = Matrix.ExpandArray();
-                Matrix[0][0] = 0;
-            }
-            CleanInvalidNodes();
-            CleanUnreachableNodes();
-
-            Matrix = Matrix.resizeArray3();
-        }
-
-        public void Print()
+        private void Print()
         {
             Console.WriteLine();
             Console.WriteLine();
@@ -86,7 +121,7 @@ namespace MDPyramid
             Console.WriteLine();
         }
 
-        public void AddLines(string[] lines)
+        private void AddLines(string[] lines)
         {
             for (var i = 0; i < lines.Length; i++)
             {
@@ -96,31 +131,6 @@ namespace MDPyramid
                     .Cast<int?>()
                     .ToArray();
             }
-        }
-
-        public Path MySolve()
-        {
-            Clean();
-            Print();
-            var results = Solve(0, 0, 0, new List<int>());
-            return results.OrderByDescending(x => x.Sum).First();
-        }
-        private IEnumerable<Path> Solve(int i, int j, int sum, List<int> path)
-        {
-            var start = Matrix.ElementAtOrDefault(i, j);
-            if (start == default)
-                yield break;
-
-            if (i + 1 == Matrix.Length)
-            {
-                yield return new Path(new List<int>(path).MyAdd(start.Value), sum + start.Value) { };
-                yield break;
-            }
-
-            foreach (var s in Solve(i + 1, j, start.Value + sum, new List<int>(path).MyAdd(start.Value)))
-                yield return s;
-
-            foreach (var s in Solve(i + 1, j + 1, start.Value + sum, new List<int>(path).MyAdd(start.Value))) yield return s;
         }
     }
 }

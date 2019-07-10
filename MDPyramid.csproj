@@ -7,6 +7,16 @@
     </PropertyGroup>
 
     <ItemGroup>
+      <Compile Remove="_NCrunch_MDPyramid\**" />
+      <EmbeddedResource Remove="_NCrunch_MDPyramid\**" />
+      <None Remove="_NCrunch_MDPyramid\**" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <None Remove="MDPyramid.v3.ncrunchsolution" />
+    </ItemGroup>
+
+    <ItemGroup>
         <PackageReference Include="FluentAssertions" Version="5.6.0" />
         <PackageReference Include="xunit" Version="2.4.1" />
         <PackageReference Include="xunit.runner.visualstudio" Version="2.4.1">
@@ -16,7 +26,7 @@
     </ItemGroup>
 
     <ItemGroup>
-      <None Update="sampleData.txt">
+      <None Update="sampleData1.txt">
         <CopyToOutputDirectory>Always</CopyToOutputDirectory>
       </None>
       <None Update="sampleData2.txt">

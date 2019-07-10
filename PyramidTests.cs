@@ -1,16 +1,11 @@
-﻿using System.Collections.Generic;
-using System.IO;
+﻿using System.IO;
 using FluentAssertions;
-using MDPyramid;
 using Xunit;
 
-namespace TreeTests
+namespace MDPyramid
 {
     public class PyramidTests
     {
-        const char separator = ' ';
-        //        Tree tree = new Tree();
-
         [Fact]
         public void Should_Find_Leftmost_Path()
         {
@@ -21,12 +16,11 @@ namespace TreeTests
                 "11 5 9",
                 "4 5 2 3"
             };
-            var tree = new Pyramid(input);
+            var pyramid = new Pyramid(input);
 
-            var actual = new List<int> { 1, 8, 11, 4 };
-            var result = tree.MySolve();
+            var result = pyramid.FindPath();
 
-            result.Nodes.Should().BeEquivalentTo(actual);
+            result.Nodes.Should().BeEquivalentTo(new[] { 1, 8, 11, 4 });
         }
 
         [Fact]
@@ -39,12 +33,11 @@ namespace TreeTests
                 "9 5 11",
                 "14 5 2 12"
             };
+            var pyramid = new Pyramid(input);
 
-            var tree = new Pyramid(input);
-            var actual = new List<int> { 1, 10, 11, 12 };
-            var result = tree.MySolve();
+            var result = pyramid.FindPath();
 
-            result.Nodes.Should().BeEquivalentTo(actual);
+            result.Nodes.Should().BeEquivalentTo(new[] { 1, 10, 11, 12 });
         }
 
         [Fact]
@@ -58,12 +51,11 @@ namespace TreeTests
                 "1 -10 11 3",
                 "1 21 19 3 5"
             };
-            var tree = new Pyramid(input);
+            var pyramid = new Pyramid(input);
 
-            var actual = new List<int> { -1, -8, 5, -10, 21 };
-            var result = tree.MySolve();
+            var result = pyramid.FindPath();
 
-            result.Nodes.Should().BeEquivalentTo(actual);
+            result.Nodes.Should().BeEquivalentTo(new[] { -1, -8, 5, -10, 21 });
         }
 
         [Fact]
@@ -75,14 +67,11 @@ namespace TreeTests
                 "1 10 11 3",
                 "1 21 19 3 5"
             };
-            var tree = new Pyramid(input);
+            var pyramid = new Pyramid(input);
 
-            var actual = new List<int> { 51, 10, 21 };
+            var result = pyramid.FindPath();
 
-            
-            var result = tree.MySolve();
-
-            result.Nodes.Should().BeEquivalentTo(actual);
+            result.Nodes.Should().BeEquivalentTo(new[] { 51, 10, 21 });
         }
 
         [Fact]
@@ -92,14 +81,11 @@ namespace TreeTests
             {
                 "1 4 21"
             };
-            var tree = new Pyramid(input);
+            var pyramid = new Pyramid(input);
 
-            var actual = new List<int> { 1 };
+            var result = pyramid.FindPath();
 
-
-            var result = tree.MySolve();
-
-            result.Nodes.Should().BeEquivalentTo(actual);
+            result.Nodes.Should().BeEquivalentTo(new[] { 1 });
         }
 
         [Fact]
@@ -112,15 +98,11 @@ namespace TreeTests
                 "9 5 3",
                 "14 10 2 12"
             };
-            var tree = new Pyramid(input);
+            var pyramid = new Pyramid(input);
 
-            var actual = new List<int> { 1, 8, 9, 14 };
+            var result = pyramid.FindPath();
 
-
-            var result = tree.MySolve();
-
-            result.Nodes.Should().BeEquivalentTo(actual);
-
+            result.Nodes.Should().BeEquivalentTo(new[] { 1, 8, 9, 14 });
         }
 
         [Fact]
@@ -134,15 +116,11 @@ namespace TreeTests
                 "14 10 2 12",
                 "1 7 3 4 5"
             };
-            var tree = new Pyramid(input);
+            var pyramid = new Pyramid(input);
 
-            var actual = new List<int> { 1, 8, 9, 14, 7 };
+            var result = pyramid.FindPath();
 
-
-            var result = tree.MySolve();
-
-            result.Nodes.Should().BeEquivalentTo(actual);
-
+            result.Nodes.Should().BeEquivalentTo(new[] { 1, 8, 9, 14, 7 });
         }
 
         [Fact]
@@ -156,38 +134,38 @@ namespace TreeTests
                 "14 11 2 12",
                 "1 6 3 4 5"
             };
-            var tree = new Pyramid(input);
+            var pyramid = new Pyramid(input);
 
-            var actual = new List<int> { 1, 8, 9, 14, 1 };
+            var result = pyramid.FindPath();
 
-
-            var result = tree.MySolve();
-
-            result.Nodes.Should().BeEquivalentTo(actual);
-
+            result.Nodes.Should().BeEquivalentTo(new[] { 1, 8, 9, 14, 1 });
         }
+
         [Fact]
-        public void Shou2ld222_Find_Path_When_Comparing_Odd_And_Even_Numbers()
+        public void Should_Find_Path_For_SampleData1()
         {
-            var r = new Pyramid(File.ReadAllLines(@".\sampleData2.txt")).MySolve();
-            r.Sum.Should().Be(8186);
-        }
-        [Fact]
-        public void Shou2ld333333_Find_Path_When_Comparing_Odd_And_Even_Numbers()
-        {
-            var r = new Pyramid(File.ReadAllLines(@".\sampleData.txt")).MySolve();
+            var r = new Pyramid(File.ReadAllLines(@".\sampleData1.txt")).FindPath();
             r.Sum.Should().Be(16);
         }
+
         [Fact]
-        public void Shou2ld33333_Find_Path_When_Comparing_Odd_And_Even_Numbers()
+        public void Should_Find_Path_For_SampleData2()
         {
-            var r = new Pyramid(File.ReadAllLines(@".\sampleData3.txt")).MySolve();
+            var r = new Pyramid(File.ReadAllLines(@".\sampleData2.txt")).FindPath();
+            r.Sum.Should().Be(8186);
+        }
+
+        [Fact]
+        public void Should_Find_Path_For_SampleData3()
+        {
+            var r = new Pyramid(File.ReadAllLines(@".\sampleData3.txt")).FindPath();
             r.Sum.Should().Be(26);
         }
+
         [Fact]
-        public void SSSS()
+        public void Main_Should_Not_Throw()
         {
-            Program.Main(null);
+            Program.Main();
         }
     }
 }

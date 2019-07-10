@@ -1,16 +1,16 @@
 ﻿using System.Collections.Generic;
+using System.Linq;
 
 namespace MDPyramid
 {
     public class Path
     {
-        public int Sum { get; set; }
         public List<int> Nodes { get; set; }
+        public int Sum => Nodes.Sum();
 
-        public Path(List<int> nodes, int sum)
+        public Path(List<int> nodes)
         {
             Nodes = nodes;
-            Sum = sum;
         }
 
         public override string ToString()
