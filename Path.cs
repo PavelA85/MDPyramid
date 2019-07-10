@@ -5,7 +5,7 @@ namespace MDPyramid
 {
     public class Path
     {
-        public List<int> Nodes { get; set; }
+        public List<int> Nodes { get; }
         public int Sum => Nodes.Sum();
 
         public Path(List<int> nodes)
